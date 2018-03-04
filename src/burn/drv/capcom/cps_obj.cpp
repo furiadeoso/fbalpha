@@ -100,14 +100,14 @@ INT32 CpsObjInit()
 {
 	if (bBurnUseBlend) CpsBlendInit();
 
-	nMax = 0x100;				// CPS1 has 256 sprites
+	nMax = 0x100;					// CPS1 has 256 sprites
 
 	if (Cps == 2) {				// CPS2 has 1024 sprites
 		nMax = 0x400;
 	}
 
-	nFrameCount = 2;			// CPS2 sprites lagged by 1 frame and double buffered
-								// CPS1 sprites lagged by 1 frame
+	nFrameCount = 1;			// CPS2 sprites lagged by 1 frame and double buffered
+												// CPS1 sprites lagged by 1 frame
 
 	ObjMem = (UINT8*)BurnMalloc((nMax << 3) * nFrameCount);
 	if (ObjMem == NULL) {

@@ -183,6 +183,7 @@ typedef INT32 (*CpsMemScanCallback)(INT32, INT32*);
 extern CpsMemScanCallback CpsMemScanCallbackFunction;
 
 // cps_run.cpp
+extern INT32 nCpsCyclesExtra;
 extern UINT8 CpsReset;
 extern UINT8 Cpi01A, Cpi01C, Cpi01E;
 extern UINT8 fFakeDip;

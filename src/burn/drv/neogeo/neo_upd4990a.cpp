@@ -43,13 +43,27 @@ INT32 uPD4990AInit(UINT32 nTicksPerSecond)
 	time_t nLocalTime = time(NULL);
 	tm* tmLocalTime = localtime(&nLocalTime);
 
-	uPD4990A.nSeconds = tmLocalTime->tm_sec;
-	uPD4990A.nMinutes = tmLocalTime->tm_min;
-	uPD4990A.nHours   = tmLocalTime->tm_hour;
-	uPD4990A.nDay     = tmLocalTime->tm_mday;
-	uPD4990A.nWeekDay = tmLocalTime->tm_wday;
-	uPD4990A.nMonth   = tmLocalTime->tm_mon + 1;
-	uPD4990A.nYear    = tmLocalTime->tm_year % 100;
+	// Set the time of the uPD4990A to the current local time
+	if (false) // LIBRETRO if playing network game, set this to true, is there a flag that can be checked runtime?
+	{
+		uPD4990A.nSeconds = 0;
+		uPD4990A.nMinutes = 0;
+		uPD4990A.nHours = 0;
+		uPD4990A.nDay = 3;
+		uPD4990A.nWeekDay = 4;
+		uPD4990A.nMonth = 1;
+		uPD4990A.nYear = 2008;
+	}
+	else
+	{
+		uPD4990A.nSeconds = tmLocalTime->tm_sec;
+		uPD4990A.nMinutes = tmLocalTime->tm_min;
+		uPD4990A.nHours   = tmLocalTime->tm_hour;
+		uPD4990A.nDay     = tmLocalTime->tm_mday;
+		uPD4990A.nWeekDay = tmLocalTime->tm_wday;
+		uPD4990A.nMonth   = tmLocalTime->tm_mon + 1;
+		uPD4990A.nYear    = tmLocalTime->tm_year % 100;
+	}
 
 	return 0;
 }

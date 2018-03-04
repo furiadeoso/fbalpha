@@ -64,8 +64,10 @@ void QsndExit()
 INT32 QsndScan(INT32 nAction)
 {
 	if (nAction & ACB_DRIVER_DATA) {
-		QsndZScan(nAction);				// Scan Z80
+		BurnTimerScan(nAction, NULL);
+		QsndZScan(nAction);			// Scan Z80
 		QscScan(nAction);				// Scan QSound Chip
+		SCAN_VAR(nQsndCyclesExtra);
 	}
 
 	return 0;

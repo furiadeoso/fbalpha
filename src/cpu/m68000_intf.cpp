@@ -1325,6 +1325,19 @@ void SekSetIRQLine(const INT32 line, const INT32 nstatus)
 
 }
 
+INT32 SekIdle(INT32 nCycles)
+{
+#if defined FBA_DEBUG
+	extern UINT8 DebugCPU_SekInitted;
+	if (!DebugCPU_SekInitted) bprintf(PRINT_ERROR, (TCHAR*)_T("SekIdle called without init\n"));
+	if (nSekActive == -1) bprintf(PRINT_ERROR, (TCHAR*)_T("SekIdle called when no CPU open\n"));
+#endif
+
+	nSekCyclesTotal += nCycles;
+
+	return nCycles;
+}
+
 // Adjust the active CPU's timeslice
 void SekRunAdjust(const INT32 nCycles)
 {
@@ -2111,6 +2124,22 @@ INT32 SekScan(INT32 nAction)
 		SCAN_VAR(nSekCPUType[i]);
 		SCAN_VAR(nSekIRQPending[i]); // fix for Gradius 2 s.states -dink feb.3.2015
 
+		/*
+		* Definitely need to be scanned
+		*/
+		SCAN_VAR(nSekCyclesTotal);
+		SCAN_VAR(nSekCyclesSegment);
+
+		/*
+		* Supicious... These look like they need to be saved, too.
+		*/
+		SCAN_VAR(nSekCyclesScanline);
+		SCAN_VAR(nSekCyclesDone);
+		SCAN_VAR(nSekCyclesToDo);
+		SCAN_VAR(nSekIRQPending);
+		SCAN_VAR(nSekCycles);
+		SCAN_VAR(m68k_ICount);
+
 #if defined EMU_A68K && defined EMU_M68K
 		// Switch to another core if needed
 		if ((nAction & ACB_WRITE) && nType != nSekCPUType[i]) {
@@ -2142,7 +2171,11 @@ INT32 SekScan(INT32 nAction)
 				// Blank pointers
 				SekRegs[i]->IrqCallback = NULL;
 				SekRegs[i]->ResetCallback = NULL;
+				SekRegs[i]->RTECallback = NULL;
+				SekRegs[i]->CmpCallback = NULL;
 			}
+
+			A68KContext savedCallbacks;
 
 			BurnAcb(&ba);
 

@@ -148,18 +148,7 @@ void SekRunEnd();
 void SekRunAdjust(const INT32 nCycles);
 INT32 SekRun(const INT32 nCycles);
 
-inline static INT32 SekIdle(INT32 nCycles)
-{
-#if defined FBA_DEBUG
-	extern UINT8 DebugCPU_SekInitted;
-	if (!DebugCPU_SekInitted) bprintf(PRINT_ERROR, (TCHAR*)_T("SekIdle called without init\n"));
-	if (nSekActive == -1) bprintf(PRINT_ERROR, (TCHAR*)_T("SekIdle called when no CPU open\n"));
-#endif
-
-	nSekCyclesTotal += nCycles;
-
-	return nCycles;
-}
+INT32 SekIdle(INT32 nCycles);
 
 inline static INT32 SekSegmentCycles()
 {

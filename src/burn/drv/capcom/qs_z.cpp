@@ -1,4 +1,5 @@
 #include "cps.h"
+#include "version.h"
 // QSound - Z80
 
 static INT32 nQsndZBank = 0;
@@ -128,6 +129,7 @@ INT32 QsndZExit()
 INT32 QsndZScan(INT32 nAction)
 {
 	ZetScan(nAction);					// Scan Z80
+	SCAN_VAR(QscCmd);
 	SCAN_VAR(nQsndZBank);
 
 	if (nAction & ACB_WRITE) {			// If write, bank could have changed
